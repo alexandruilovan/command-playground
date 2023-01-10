@@ -1,0 +1,67 @@
+protocol Command {
+    func execute()
+}
+
+class Light {
+    var isOn = false
+    
+    func turnOn() {
+        isOn = true
+        print("The light is on.")
+    }
+    
+    func turnOff() {
+        isOn = false
+        print("The light is off.")
+    }
+}
+
+class LightOnCommand: Command {
+    private var light: Light
+    
+    init(_ light: Light) {
+        self.light = light
+    }
+    
+    func execute() {
+        light.turnOn()
+    }
+}
+
+class LightOffCommand: Command {
+    private var light: Light
+    
+    init(_ light: Light) {
+        self.light = light
+    }
+    
+    func execute() {
+        light.turnOff()
+    }
+}
+
+class Switch {
+    private var onCommand: Command
+    private var offCommand: Command
+    
+    init(_ onCommand: Command, _ offCommand: Command) {
+        self.onCommand = onCommand
+        self.offCommand = offCommand
+    }
+    
+    func flipUp() {
+        onCommand.execute()
+    }
+    
+    func flipDown() {
+        offCommand.execute()
+    }
+}
+
+let light = Light()
+let lightOnCommand = LightOnCommand(light)
+let lightOffCommand = LightOffCommand(light)
+
+let switchControl = Switch(lightOnCommand, lightOffCommand)
+switchControl.flipUp()
+switchControl.flipDown()
